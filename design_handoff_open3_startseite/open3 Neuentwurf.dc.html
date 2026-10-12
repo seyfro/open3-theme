@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/modernist-51a53f58-2579-44dc-819d-d5872d5348a3/styles.css">
+  <script src="_ds/modernist-51a53f58-2579-44dc-819d-d5872d5348a3/_ds_bundle.js"></script>
+  <script src="./image-slot.js"></script>
+  <style>
+    html, body { margin: 0; padding: 0; background: #2d2b2b; }
+    body { font-family: var(--font-body); color: var(--color-text); text-wrap: pretty; }
+    a { color: var(--color-accent-700); text-decoration: underline; text-underline-offset: 3px; }
+    a:hover { color: var(--color-accent-600); }
+    a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  </style>
+</helmet>
+
+<div style="display:flex; flex-direction:column; min-height:100vh;">
+
+  <!-- Review-Leiste (nicht Teil des Designs) -->
+  <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; padding:10px 16px; background:#2d2b2b; color:#f3f2f2; font-size:12px; position:sticky; top:0; z-index:50;">
+    <span style="font-weight:800; letter-spacing:0.08em; text-transform:uppercase; font-size:11px; opacity:0.7;">Seiten</span>
+    <div style="display:flex; flex-wrap:wrap; gap:4px;">
+      <sc-for list="{{ screens }}" as="s" hint-placeholder-count="8">
+        <button type="button" onClick="{{ s.go }}" style="{{ s.style }}">{{ s.label }}</button>
+      </sc-for>
+    </div>
+    <span style="flex:1;"></span>
+    <span style="font-weight:800; letter-spacing:0.08em; text-transform:uppercase; font-size:11px; opacity:0.7;">Ansicht</span>
+    <div style="display:flex; gap:4px;">
+      <button type="button" onClick="{{ setDesktop }}" style="{{ desktopBtnStyle }}">Desktop</button>
+      <button type="button" onClick="{{ setMobile }}" style="{{ mobileBtnStyle }}">Mobil 390</button>
+    </div>
+  </div>
+
+  <!-- Seiten-Rahmen -->
+  <div style="flex:1; display:flex; justify-content:center; padding:0;">
+  <div data-screen-label="{{ screenLabel }}" style="{{ frameStyle }}">
+
+    <!-- Kopf / Navigation -->
+    <div style="border-bottom:2px solid var(--color-divider); padding:14px clamp(16px,4vw,48px); display:flex; align-items:center; gap:24px; flex-wrap:wrap;">
+      <a href="#" onClick="{{ goHome }}" style="display:flex; align-items:baseline; gap:10px; text-decoration:none; color:inherit; margin-right:auto;">
+        <span style="font-family:var(--font-heading); font-weight:800; font-size:26px; letter-spacing:-0.02em; line-height:1;">Open<span style="color:var(--color-accent);">3</span></span>
+        <span style="font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--color-neutral-700); line-height:1;">Government · Data · Society</span>
+      </a>
+      <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+        <nav style="display:flex; gap:20px; flex-wrap:wrap; align-items:center;">
+          <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="7">
+            <a href="#" onClick="{{ n.go }}" style="{{ n.style }}">{{ n.label }}</a>
+          </sc-for>
+        </nav>
+        <a href="#" class="btn btn-primary" style="justify-content:flex-start; text-decoration:none;">Newsletter</a>
+      </sc-if>
+      <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+        <button type="button" class="btn btn-secondary" onClick="{{ toggleMenu }}">{{ menuLabel }}</button>
+      </sc-if>
+    </div>
+    <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+      <nav style="display:flex; flex-direction:column; border-bottom:2px solid var(--color-divider);">
+        <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="7">
+          <a href="#" onClick="{{ n.go }}" style="{{ n.mobileStyle }}">{{ n.label }}</a>
+        </sc-for>
+        <a href="#" class="btn btn-primary" style="margin:12px 16px; justify-content:flex-start; text-decoration:none;">Newsletter abonnieren</a>
+      </nav>
+    </sc-if>
+
+    <!-- Inhalt + Sidebar -->
+    <div style="display:flex; flex-wrap:wrap; gap:0; padding:0 clamp(16px,4vw,48px);">
+
+      <main style="{{ mainStyle }}">
+
+        <!-- ======== STARTSEITE A: Ruled list ======== -->
+        <sc-if value="{{ isStartA }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:40px 0 24px; border-bottom:2px solid var(--color-divider);">
+            <h1 style="font-size:clamp(30px,4vw,46px); line-height:1.06; letter-spacing:-0.02em; margin:0 0 14px; max-width:22ch;">Netzwerk zur Förderung von OpenSociety, OpenGov und OpenData in Österreich</h1>
+            <p style="font-size:16px; line-height:28px; margin:0; max-width:58ch; color:var(--color-neutral-800);">Open3 ist ein offenes, gemeinnütziges Netzwerk. Seit 2010 setzen wir anwendungsorientierte Projekte um, sammeln Grundlagenwissen und vernetzen Politik, Verwaltung, Wirtschaft und Bevölkerung.</p>
+          </div>
+          <div style="display:flex; align-items:baseline; justify-content:space-between; padding:28px 0 0;">
+            <span style="font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-accent-700);">Blog · Neueste Beiträge</span>
+            <a href="#" style="font-size:13px;">RSS-Feed</a>
+          </div>
+          <sc-for list="{{ posts }}" as="p" hint-placeholder-count="5">
+            <article style="{{ p.rowStyle }}">
+              <div style="display:flex; gap:12px; align-items:center; font-size:12px; color:var(--color-neutral-700); font-feature-settings:'tnum' 1;">
+                <span>{{ p.date }}</span>
+                <span class="tag tag-accent">{{ p.cat }}</span>
+              </div>
+              <h2 style="font-size:clamp(20px,2.2vw,26px); line-height:1.15; letter-spacing:-0.01em; margin:10px 0 8px; max-width:34ch;"><a href="#" onClick="{{ goPost }}" style="color:inherit; text-decoration:none;">{{ p.title }}</a></h2>
+              <p style="font-size:15px; line-height:26px; margin:0 0 12px; max-width:62ch; color:var(--color-neutral-800);">{{ p.excerpt }}</p>
+              <div style="display:flex; gap:16px; align-items:center;">
+                <a href="#" onClick="{{ goPost }}" class="btn btn-ghost" style="text-decoration:none;">Weiterlesen →</a>
+                <span style="font-size:12px; color:var(--color-neutral-700);">{{ p.author }}</span>
+              </div>
+            </article>
+          </sc-for>
+          <div style="display:flex; gap:4px; padding:28px 0 48px; align-items:center; font-feature-settings:'tnum' 1;">
+            <span style="font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-neutral-700); margin-right:12px;">Seite</span>
+            <span style="padding:6px 12px; background:var(--color-accent); color:var(--color-bg); font-size:13px;">1</span>
+            <a href="#" style="padding:6px 12px; font-size:13px; text-decoration:none;">2</a>
+            <a href="#" style="padding:6px 12px; font-size:13px; text-decoration:none;">3</a>
+            <span style="padding:6px 4px; font-size:13px; color:var(--color-neutral-600);">…</span>
+            <a href="#" style="padding:6px 12px; font-size:13px; text-decoration:none;">46</a>
+            <a href="#" style="padding:6px 12px; font-size:13px; text-decoration:none;">Ältere →</a>
+          </div>
+        </sc-if>
+
+        <!-- ======== STARTSEITE B: Aufmacher + Karten ======== -->
+        <sc-if value="{{ isStartB }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:40px 0 0;">
+            <span style="display:block; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-accent-700); margin-bottom:14px;">Aktuell</span>
+            <article style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%,280px),1fr)); gap:28px; align-items:start; padding-bottom:36px; border-bottom:2px solid var(--color-divider);">
+              <div class="grayscale" style="aspect-ratio:4/3;">
+                <image-slot id="feat-post" shape="rect" placeholder="Beitragsbild (Let the Data Union Begin)"></image-slot>
+              </div>
+              <div>
+                <div style="display:flex; gap:12px; align-items:center; font-size:12px; color:var(--color-neutral-700); font-feature-settings:'tnum' 1;">
+                  <span>{{ lead.date }}</span>
+                  <span class="tag tag-accent">{{ lead.cat }}</span>
+                </div>
+                <h1 style="font-size:clamp(26px,3vw,38px); line-height:1.08; letter-spacing:-0.02em; margin:12px 0 12px;"><a href="#" onClick="{{ goPost }}" style="color:inherit; text-decoration:none;">{{ lead.title }}</a></h1>
+                <p style="font-size:16px; line-height:28px; margin:0 0 16px; color:var(--color-neutral-800);">{{ lead.excerpt }}</p>
+                <a href="#" onClick="{{ goPost }}" class="btn btn-primary" style="text-decoration:none;">Beitrag lesen</a>
+              </div>
+            </article>
+          </div>
+          <div style="display:flex; align-items:baseline; justify-content:space-between; padding:28px 0 16px;">
+            <span style="font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-accent-700);">Weitere Beiträge</span>
+            <a href="#" style="font-size:13px;">Alle 46 Seiten</a>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%,250px),1fr)); gap:16px; padding-bottom:16px;">
+            <sc-for list="{{ restPosts }}" as="p" hint-placeholder-count="4">
+              <div class="card">
+                <span class="card-kicker">{{ p.cat }}</span>
+                <span class="card-title"><a href="#" onClick="{{ goPost }}" style="color:inherit; text-decoration:none;">{{ p.title }}</a></span>
+                <p class="card-body">{{ p.excerpt }}</p>
+                <div class="card-meta">{{ p.date }} · {{ p.author }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="padding:16px 0 48px;">
+            <a href="#" class="btn btn-secondary" style="text-decoration:none;">Ältere Beiträge →</a>
+          </div>
+        </sc-if>
+
+        <!-- ======== BEITRAG ======== -->
+        <sc-if value="{{ isPost }}" hint-placeholder-val="{{ false }}">
+          <article style="padding:40px 0 48px;">
+            <div style="display:flex; gap:12px; align-items:center; font-size:12px; color:var(--color-neutral-700); font-feature-settings:'tnum' 1;">
+              <a href="#" onClick="{{ goHome }}" style="text-decoration:none;">Blog</a><span>/</span><span class="tag tag-accent">News</span><span>15. Juli 2025</span>
+            </div>
+            <h1 style="font-size:clamp(30px,3.6vw,44px); line-height:1.06; letter-spacing:-0.02em; margin:14px 0 18px; max-width:26ch;">Let the Data Union Begin: Our Submission to the European Commission</h1>
+            <div style="display:flex; gap:16px; align-items:center; padding-bottom:24px; border-bottom:2px solid var(--color-divider); font-size:13px; color:var(--color-neutral-800);">
+              <span>Autor: <a href="#">Robert Seyfriedsberger</a></span>
+              <span>·</span>
+              <span>4 Min. Lesezeit</span>
+            </div>
+            <div style="max-width:66ch; font-size:17px; line-height:28px; padding-top:28px;">
+              <p style="margin:0 0 28px;">At open3, we believe that the future of a democratic, innovative and resilient Europe depends on how we govern and use data today. That’s why we’ve taken part in the European Commission’s public consultation on the upcoming <strong>EU Data Union Strategy</strong>—a foundational roadmap for Europe's digital future.</p>
+              <p style="margin:0 0 14px;">We’re proud to share our full submission, titled:</p>
+              <blockquote style="margin:0 0 28px; padding:0 0 0 20px; border-left:2px solid var(--color-accent); font-family:var(--font-heading); font-weight:800; font-size:24px; line-height:1.2; letter-spacing:-0.01em;">Let the Data Union Begin<span style="display:block; font-family:var(--font-body); font-weight:400; font-size:15px; line-height:24px; margin-top:8px; color:var(--color-neutral-800);">An open, strategic response from Austria’s civic tech and data governance community</span></blockquote>
+              <div class="grayscale" style="aspect-ratio:16/9; margin:0 0 12px;">
+                <image-slot id="post-hero" shape="rect" placeholder="Titelseite der Einreichung (PDF-Vorschau)"></image-slot>
+              </div>
+              <p style="margin:0 0 28px; font-size:14px; line-height:22px; color:var(--color-neutral-700);"><a href="#">Download the full PDF submission</a> (see entry also on <a href="#">ec.europe.eu</a>)</p>
+              <h2 style="font-size:24px; line-height:1.15; letter-spacing:-0.01em; margin:0 0 14px;">What’s in our submission?</h2>
+              <p style="margin:0 0 20px;">Our position paper is rooted in practical experience and long-term engagement with Austria’s Open Data and Open Government community. We propose actionable steps in eight key areas:</p>
+              <ol style="margin:0 0 28px; padding:0; list-style:none; counter-reset:none; display:grid; gap:0;">
+                <sc-for list="{{ submissionAreas }}" as="a" hint-placeholder-count="8">
+                  <li style="display:grid; grid-template-columns:40px minmax(0,1fr); gap:12px; padding:12px 0; border-top:1px solid var(--color-divider);">
+                    <span style="font-family:var(--font-heading); font-weight:800; font-size:14px; line-height:26px; font-feature-settings:'tnum' 1;">{{ a.num }}</span>
+                    <div><strong style="display:block; font-size:16px; line-height:26px;">{{ a.title }}</strong><span style="font-size:15px; line-height:24px; color:var(--color-neutral-800);">{{ a.text }}</span></div>
+                  </li>
+                </sc-for>
+              </ol>
+              <h2 style="font-size:24px; line-height:1.15; letter-spacing:-0.01em; margin:0 0 14px;">Why it matters</h2>
+              <p style="margin:0 0 28px;">Europe has the tools and ambition to lead globally in trustworthy data governance—but only if <strong>openness, interoperability, and citizen focus</strong> become non-negotiable design principles. This submission is our contribution to that shared vision.</p>
+              <h2 style="font-size:24px; line-height:1.15; letter-spacing:-0.01em; margin:0 0 14px;">Get involved</h2>
+              <p style="margin:0 0 28px;">We encourage civic actors, researchers, public officials and innovators across Europe to make their voices heard as well. The consultation remains open until July 18th, and submissions can be made via the <a href="#">EU consultation platform</a>.</p>
+              <p style="margin:0;">Let’s build a Data Union that works—for the many, not just the few.</p>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:28px 0; margin-top:28px; border-top:2px solid var(--color-divider); font-size:13px;">
+              <span style="color:var(--color-neutral-700); margin-right:4px;">Kategorie</span><span class="tag tag-accent">News</span>
+              <span style="color:var(--color-neutral-700); margin-left:12px; margin-right:4px;">Themen</span><span class="tag tag-neutral">Open Data</span><span class="tag tag-neutral">EU</span><span class="tag tag-neutral">Data Union</span>
+              <span style="flex:1;"></span>
+              <a href="#" class="btn btn-ghost" style="text-decoration:none;">Teilen auf Bluesky</a>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%,240px),1fr)); border-top:2px solid var(--color-divider); border-bottom:2px solid var(--color-divider);">
+              <a href="#" style="padding:20px 20px 20px 0; text-decoration:none; color:inherit; border-right:2px solid var(--color-divider);"><span style="display:block; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:6px;">← Vorheriger Beitrag</span><span style="font-family:var(--font-heading); font-weight:800; font-size:15px; line-height:1.3;">Ein Register, viele Chancen: Warum Österreich ein zentrales Adressregister mit Open Webservice braucht</span></a>
+              <a href="#" style="padding:20px 0 20px 20px; text-decoration:none; color:inherit;"><span style="display:block; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:6px;">Nächster Beitrag →</span><span style="font-family:var(--font-heading); font-weight:800; font-size:15px; line-height:1.3; color:var(--color-neutral-600);">Noch kein neuerer Beitrag</span></a>
+            </div>
+            <section style="padding-top:36px;">
+              <h2 style="font-size:22px; line-height:1.15; margin:0 0 6px;">Kommentar hinzufügen</h2>
+              <p style="font-size:14px; line-height:22px; color:var(--color-neutral-700); margin:0 0 20px;">Noch keine Kommentare. E-Mail-Adresse wird nicht veröffentlicht.</p>
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%,220px),1fr)); gap:16px; max-width:66ch;">
+                <div class="field"><label>Name</label><input class="input" type="text" placeholder="Ihr Name"></div>
+                <div class="field"><label>E-Mail</label><input class="input" type="email" placeholder="name@beispiel.at"></div>
+              </div>
+              <div class="field" style="max-width:66ch; margin-top:16px;"><label>Kommentar</label><textarea class="input" placeholder="Ihr Kommentar"></textarea></div>
+              <div style="margin-top:16px;"><button type="button" class="btn btn-primary">Kommentar absenden</button></div>
+            </section>
+          </article>
+        </sc-if>
+
+        <!-- ======== PROJEKTE ======== -->
+        <sc-if value="{{ isProjects }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:40px 0 48px;">
+            <span style="display:block; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-accent-700); margin-bottom:14px;">Projekte · 23</span>
+            <h1 style="font-size:clamp(30px,4vw,46px); line-height:1.06; letter-spacing:-0.02em; margin:0 0 14px;">Anwendungsorientierte Projekte seit 2010</h1>
+            <p style="font-size:16px; line-height:28px; margin:0 0 28px; max-width:58ch; color:var(--color-neutral-800);">Visualisierungen öffentlicher Budgets, Apps auf Basis offener Verwaltungsdaten, Umfragen und Dokumentationen – umgesetzt von Mitgliedern des Netzwerks, ohne finanzielle Interessen.</p>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; padding-bottom:20px; border-bottom:2px solid var(--color-divider);">
+              <sc-for list="{{ projectFilters }}" as="f" hint-placeholder-count="6">
+                <button type="button" onClick="{{ f.go }}" class="{{ f.cls }}" style="cursor:pointer; border:0; font:inherit;">{{ f.label }}</button>
+              </sc-for>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%,230px),1fr)); gap:2px; background:var(--color-divider); border:2px solid var(--color-divider); border-top:0; margin-top:0;">
+              <sc-for list="{{ visibleProjects }}" as="pr" hint-placeholder-count="12">
+                <a href="#" onClick="{{ goProject }}" style="display:flex; flex-direction:column; gap:10px; padding:16px; background:var(--color-bg); text-decoration:none; color:inherit; min-width:0;" style-hover="background:var(--color-accent-100);">
+                  <div class="grayscale" style="aspect-ratio:16/9;">
+                    <image-slot id="{{ pr.slotId }}" shape="rect" placeholder="{{ pr.short }}"></image-slot>
+                  </div>
+                  <span style="font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-accent-700);">{{ pr.type }}</span>
+                  <span style="font-family:var(--font-heading); font-weight:800; font-size:16px; line-height:1.25; letter-spacing:-0.01em;">{{ pr.title }}</span>
+                </a>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- ======== PROJEKT-DETAIL ======== -->
+        <sc-if value="{{ isProject }}" hint-placeholder-val="{{ false }}">
+          <article style="padding:40px 0 48px;">
+            <div style="display:flex; gap:12px; align-items:center; font-size:12px; color:var(--color-neutral-700);">
+              <a href="#" onClick="{{ goProjects }}" style="text-decoration:none;">Projekte</a><span>/</span><span style="font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-accent-700);">Visualisierung</span>
+            </div>
+            <h1 style="font-size:clamp(30px,3.6vw,44px); line-height:1.06; letter-spacing:-0.02em; margin:14px 0 14px; max-width:24ch;">Budgetvisualisierung 2011–2014</h1>
+            <p style="font-size:17px; line-height:28px; margin:0 0 24px; max-width:60ch; color:var(--color-neutral-800);">Das Bundesbudget 2011–2014 inklusive Kürzungen nach Größenverhältnis in Beziehung gesetzt: je größer ein Bereich angezeigt wird (z. B. Kinder/Jugend/Familie, Pflege), desto mehr Geld wird eingespart. Eine interaktive Detailansicht ist möglich.</p>
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:28px;">
+              <a href="#" class="btn btn-primary" style="text-decoration:none;">Interaktive Grafik öffnen</a>
+              <a href="#" class="btn btn-secondary" style="text-decoration:none;">Datensatz (CSV)</a>
+            </div>
+            <div class="grayscale" style="aspect-ratio:16/9; border:2px solid var(--color-divider);">
+              <image-slot id="project-hero" shape="rect" placeholder="Treemap-Screenshot der Budgetvisualisierung"></image-slot>
+            </div>
+            <p style="font-size:13px; line-height:20px; color:var(--color-neutral-700); margin:8px 0 36px;">Treemap der Konsolidierungsmaßnahmen nach Ressorts, 2011–2014.</p>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%,260px),1fr)); gap:36px;">
+              <div style="font-size:16px; line-height:28px;">
+                <h2 style="font-size:22px; line-height:1.15; letter-spacing:-0.01em; margin:0 0 12px;">Worum es geht</h2>
+                <p style="margin:0 0 20px; color:var(--color-neutral-800);">Eine zusätzliche Infografik zeigt, welche Bereiche in Prozent von ihrem jeweiligen Gesamtbudget am meisten sparen müssen. Die Visualisierung entstand im Rahmen der Diskussion um das Sparpaket der Bundesregierung.</p>
+                <p style="margin:0; color:var(--color-neutral-800);">Ergänzend steht der Gesamthaushalt 2011–2014 als zweite Treemap zur Verfügung.</p>
+              </div>
+              <div>
+                <h2 style="font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-accent-700); margin:0 0 8px; font-family:var(--font-body); font-weight:400;">Steckbrief</h2>
+                <table class="table">
+                  <tbody>
+                    <sc-for list="{{ projectFacts }}" as="f" hint-placeholder-count="5">
+                      <tr><td style="color:var(--color-neutral-700); width:38%;">{{ f.k }}</td><td>{{ f.v }}</td></tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div style="margin-top:44px; padding-top:24px; border-top:2px solid var(--color-divider);">
+              <span style="display:block; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-accent-700); margin-bottom:14px;">Verwandte Projekte</span>
+              <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%,200px),1fr)); gap:16px;">
+                <sc-for list="{{ relatedProjects }}" as="pr" hint-placeholder-count="3">
+                  <a href="#" onClick="{{ goProjects }}" class="card" style="text-decoration:none; color:inherit;"><span class="card-kicker">{{ pr.type }}</span><span class="card-title">{{ pr.title }}</span></a>
+                </sc-for>
+              </div>
+            </div>
+          </article>
+        </sc-if>
+
+        <!-- ======== GRUNDLAGEN ======== -->
+        <sc-if value="{{ isBasics }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:40px 0 48px;">
+            <span style="display:block; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-accent-700); margin-bottom:14px;">Grundlagen · 21 Beiträge</span>
+            <h1 style="font-size:clamp(30px,4vw,46px); line-height:1.06; letter-spacing:-0.02em; margin:0 0 14px;">Grundlageninformationen zu openSociety, openGovernment und openData</h1>
+            <p style="font-size:16px; line-height:28px; margin:0 0 32px; max-width:58ch; color:var(--color-neutral-800);">Einstieg, Prinzipien, Lizenzen, Formate und ausgewählte Studien – als fortlaufendes Nachschlagewerk gepflegt.</p>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%,280px),1fr)); gap:0 40px; border-top:2px solid var(--color-divider);">
+              <sc-for list="{{ basics }}" as="b" hint-placeholder-count="21">
+                <a href="#" style="display:grid; grid-template-columns:36px minmax(0,1fr); gap:12px; align-items:baseline; padding:14px 0; border-bottom:1px solid var(--color-divider); text-decoration:none; color:inherit;" style-hover="color:var(--color-accent-700);">
+                  <span style="font-family:var(--font-heading); font-weight:800; font-size:13px; font-feature-settings:'tnum' 1; color:var(--color-neutral-700);">{{ b.num }}</span>
+                  <span style="font-size:16px; line-height:24px;">{{ b.title }}</span>
+                </a>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- ======== ÜBER OPEN3 ======== -->
+        <sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
+          <article style="padding:40px 0 48px;">
+            <span style="display:block; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-accent-700); margin-bottom:14px;">Über open3</span>
+            <h1 style="font-size:clamp(30px,4vw,46px); line-height:1.06; letter-spacing:-0.02em; margin:0 0 28px; max-width:24ch;">Open Society, Open Government, Open Data</h1>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%,180px),1fr)); border-top:2px solid var(--color-divider); border-bottom:2px solid var(--color-divider);">
+              <div style="padding:20px 20px 20px 0; border-right:2px solid var(--color-divider);"><span style="display:block; font-family:var(--font-heading); font-weight:800; font-size:40px; line-height:1; color:var(--color-accent); margin-bottom:10px;">1</span><strong style="display:block; font-size:16px; margin-bottom:4px;">Open Society</strong><span style="font-size:14px; line-height:22px; color:var(--color-neutral-800);">Transparenz</span></div>
+              <div style="padding:20px; border-right:2px solid var(--color-divider);"><span style="display:block; font-family:var(--font-heading); font-weight:800; font-size:40px; line-height:1; color:var(--color-accent); margin-bottom:10px;">2</span><strong style="display:block; font-size:16px; margin-bottom:4px;">Open Government</strong><span style="font-size:14px; line-height:22px; color:var(--color-neutral-800);">Partizipation und Partizipationsfähigkeit</span></div>
+              <div style="padding:20px 0 20px 20px;"><span style="display:block; font-family:var(--font-heading); font-weight:800; font-size:40px; line-height:1; color:var(--color-accent); margin-bottom:10px;">3</span><strong style="display:block; font-size:16px; margin-bottom:4px;">Open Data</strong><span style="font-size:14px; line-height:22px; color:var(--color-neutral-800);">Kollaboration zwischen Stakeholdern</span></div>
+            </div>
+            <div style="max-width:66ch; font-size:17px; line-height:28px; padding-top:28px;">
+              <p style="margin:0 0 28px;">Der Verein Open3 steht für Open Society, Open Government und Open Data – die drei Dimensionen, die in einem modernen Staat zu hoher <strong>Transparenz</strong>, <strong>Partizipation</strong> und <strong>Partizipationsfähigkeit</strong> und Möglichkeiten der <strong>Kollaboration</strong> zwischen verschiedenen Stakeholdern führen.</p>
+              <p style="margin:0 0 28px;">Open3 ist ein offenes, gemeinnütziges Netzwerk zur Förderung dieses Ansatzes, der technische wie politikwissenschaftliche und sozio-technische Phänomene verbinden möchte. Seit seiner Gründung Anfang 2010 hat Open3 bereits mehrere <a href="#" onClick="{{ goProjects }}"><strong>anwendungsorientierte Projekte</strong></a> umgesetzt und hat auch einen weiteren Tätigkeitsbereich eröffnet – die <strong>wissenschaftliche Auseinandersetzung</strong>.</p>
+              <p style="margin:0 0 28px;">Open3 versucht sich als Intermediär zwischen den beteiligten Gruppen Politik–Verwaltung–Bevölkerung–Wirtschaft zu positionieren und den <strong>Wissenstransfer</strong> in alle Richtungen zu ermöglichen. Der Verein ist eine <strong>Non-Profit-Organisation</strong>, die Mitglieder verfolgen keine finanziellen Interessen, sondern bringen gemäß der Diktion von „Open“ gerne ihre Expertise in der Community ein.</p>
+              <h2 style="font-size:24px; line-height:1.15; letter-spacing:-0.01em; margin:0 0 14px;">Services</h2>
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%,200px),1fr)); gap:0 32px; border-top:2px solid var(--color-divider); margin-bottom:28px;">
+                <sc-for list="{{ services }}" as="s" hint-placeholder-count="5">
+                  <a href="#" style="display:block; padding:12px 0; border-bottom:1px solid var(--color-divider); text-decoration:none; color:inherit;"><strong style="display:block; font-size:15px;">{{ s.name }}</strong><span style="font-size:14px; line-height:22px; color:var(--color-neutral-800);">{{ s.desc }}</span></a>
+                </sc-for>
+              </div>
+              <h2 style="font-size:24px; line-height:1.15; letter-spacing:-0.01em; margin:0 0 14px;">Auf dem Laufenden bleiben</h2>
+              <p style="margin:0 0 16px;">Abonnieren Sie den <a href="#">RSS-Feed des Blogs</a>, den <a href="#">Newsletter</a> oder folgen Sie uns auf <a href="#">Bluesky</a>. Bei Fragen oder Feedback: <a href="#">office@open3.at</a></p>
+            </div>
+          </article>
+        </sc-if>
+
+        <!-- ======== OPENEVENTS ======== -->
+        <sc-if value="{{ isEvents }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:40px 0 48px;">
+            <span style="display:block; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-accent-700); margin-bottom:14px;">openEvents</span>
+            <h1 style="font-size:clamp(30px,4vw,46px); line-height:1.06; letter-spacing:-0.02em; margin:0 0 28px; max-width:24ch;">Veranstaltungen rund um Open Data und Open Government</h1>
+            <h2 style="font-size:22px; line-height:1.15; letter-spacing:-0.01em; margin:0 0 8px;">Nächste Veranstaltungen in Österreich</h2>
+            <p style="font-size:16px; line-height:28px; margin:0 0 16px; max-width:60ch; color:var(--color-neutral-800);">Neue Veranstaltungen in Österreich werden im open3-Blog in der Kategorie <a href="#">Termine</a> angekündigt – Ergänzungen für diese Liste bitte an <a href="#">office@open3.at</a> senden.</p>
+            <div style="border-top:2px solid var(--color-divider); border-bottom:2px solid var(--color-divider); padding:20px 0; margin-bottom:36px; display:grid; grid-template-columns:auto minmax(0,1fr); gap:20px; align-items:baseline;">
+              <span style="font-family:var(--font-heading); font-weight:800; font-size:22px; line-height:1; font-feature-settings:'tnum' 1;">27.01.<span style="display:block; font-size:12px; font-weight:400; color:var(--color-neutral-700); margin-top:4px;">2025 · 18:00</span></span>
+              <div><strong style="display:block; font-size:17px; line-height:1.3;">Veranstaltungstipp zu #mehrGRIPS in der Urania, Wien</strong><span style="font-size:14px; line-height:22px; color:var(--color-neutral-800);">VHS Wiener Urania, Uraniastraße 1, 1010 Wien · Kosten: € 0,00 · <a href="#">Zur Anmeldung</a></span></div>
+            </div>
+            <h2 style="font-size:22px; line-height:1.15; letter-spacing:-0.01em; margin:0 0 8px;">Nächste Veranstaltungen in Europa</h2>
+            <p style="font-size:16px; line-height:28px; margin:0 0 16px; max-width:60ch; color:var(--color-neutral-800);">Der nachfolgende Kalender wird von Mitarbeitern der europäischen Kommission im Rahmen der <a href="#">ePSIplus-Plattform</a> gepflegt und zeigt Veranstaltungen rund um OpenData in ganz Europa.</p>
+            <div style="border:2px solid var(--color-divider); padding:24px; margin-bottom:36px; display:flex; flex-direction:column; gap:8px;">
+              <span style="font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-neutral-700);">Eingebetteter Kalender</span>
+              <span style="font-size:14px; color:var(--color-neutral-800);">Google-Kalender „ePSIplatform events“ – wird beim Laden der Seite eingebunden (Consent-pflichtig).</span>
+              <a href="#" class="btn btn-secondary" style="align-self:flex-start; text-decoration:none;">Kalender laden</a>
+            </div>
+            <h2 style="font-size:22px; line-height:1.15; letter-spacing:-0.01em; margin:0 0 12px;">Bereits stattgefundene Veranstaltungen in Österreich</h2>
+            <table class="table">
+              <thead><tr><th style="width:130px;">Datum</th><th>Veranstaltung</th><th style="width:110px;">Ort</th></tr></thead>
+              <tbody>
+                <sc-for list="{{ pastEvents }}" as="e" hint-placeholder-count="10">
+                  <tr><td style="font-feature-settings:'tnum' 1; white-space:nowrap; color:var(--color-neutral-800);">{{ e.date }}</td><td><a href="#">{{ e.title }}</a></td><td style="color:var(--color-neutral-800);">{{ e.place }}</td></tr>
+                </sc-for>
+              </tbody>
+            </table>
+            <div style="margin-top:16px;"><a href="#" class="btn btn-ghost" style="text-decoration:none;">Alle 31 Einträge anzeigen</a></div>
+          </div>
+        </sc-if>
+
+      </main>
+
+      <!-- ======== SIDEBAR ======== -->
+      <aside style="{{ asideStyle }}">
+        <div style="padding-top:40px;">
+          <label style="display:block; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:8px;">Suche</label>
+          <div style="display:flex; gap:8px;">
+            <input class="input" type="search" placeholder="Beiträge, Projekte, Grundlagen …" style="flex:1; min-width:0;">
+            <button type="button" class="btn btn-secondary">Suchen</button>
+          </div>
+        </div>
+
+        <div style="border-top:2px solid var(--color-divider); padding-top:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px;">
+            <span style="font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-accent-700);">Projekt-Explorer</span>
+            <a href="#" onClick="{{ goProjects }}" style="font-size:12px;">alle anzeigen</a>
+          </div>
+          <a href="#" onClick="{{ goProject }}" class="grayscale" style="display:block; aspect-ratio:16/9; border:2px solid var(--color-divider);">
+            <image-slot id="{{ explorerSlotId }}" shape="rect" placeholder="{{ explorer.short }}"></image-slot>
+          </a>
+          <span style="display:block; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-accent-700); margin-top:12px;">{{ explorer.type }}</span>
+          <a href="#" onClick="{{ goProject }}" style="display:block; font-family:var(--font-heading); font-weight:800; font-size:16px; line-height:1.25; margin-top:4px; color:inherit; text-decoration:none;">{{ explorer.title }}</a>
+          <button type="button" class="btn btn-ghost" onClick="{{ nextExplorer }}" style="margin-top:8px;">Nächstes Projekt →</button>
+        </div>
+
+        <div style="border-top:2px solid var(--color-divider); padding-top:16px;">
+          <span style="display:block; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-accent-700); margin-bottom:8px;">Neu im Blog</span>
+          <div style="display:flex; flex-direction:column;">
+            <sc-for list="{{ recent }}" as="r" hint-placeholder-count="8">
+              <a href="#" onClick="{{ goPost }}" style="display:grid; grid-template-columns:52px minmax(0,1fr); gap:10px; padding:9px 0; border-bottom:1px solid var(--color-divider); text-decoration:none; color:inherit; font-size:14px; line-height:20px;" style-hover="color:var(--color-accent-700);"><span style="font-size:12px; color:var(--color-neutral-700); font-feature-settings:'tnum' 1;">{{ r.short }}</span><span>{{ r.title }}</span></a>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="border-top:2px solid var(--color-divider); padding-top:16px;">
+          <span style="display:block; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-accent-700); margin-bottom:8px;">Kategorien</span>
+          <div style="display:flex; flex-direction:column;">
+            <sc-for list="{{ categories }}" as="c" hint-placeholder-count="5">
+              <a href="#" style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--color-divider); text-decoration:none; color:inherit; font-size:14px;" style-hover="color:var(--color-accent-700);"><span>{{ c.name }}</span><span style="color:var(--color-neutral-700); font-feature-settings:'tnum' 1;">{{ c.count }}</span></a>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="background:var(--color-accent); color:var(--color-bg); padding:20px; margin-bottom:48px;">
+          <span style="display:block; font-family:var(--font-heading); font-weight:800; font-size:22px; line-height:1.1; letter-spacing:-0.01em; margin-bottom:12px;">Newsletter</span>
+          <span style="display:block; font-size:14px; line-height:22px; margin-bottom:14px;">Neue Beiträge, Termine und Projekte per E-Mail.</span>
+          <input class="input" type="email" placeholder="E-Mail-Adresse" style="background:var(--color-bg); margin-bottom:8px;">
+          <button type="button" class="btn btn-ghost" style="color:var(--color-bg); border:1px solid var(--color-bg); width:100%; justify-content:flex-start;">Abonnieren</button>
+        </div>
+      </aside>
+    </div>
+
+    <!-- ======== FOOTER ======== -->
+    <footer style="border-top:2px solid var(--color-divider); padding:32px clamp(16px,4vw,48px) 40px; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%,200px),1fr)); gap:28px; font-size:13px; line-height:22px;">
+      <div>
+        <span style="display:block; font-family:var(--font-heading); font-weight:800; font-size:20px; letter-spacing:-0.02em; margin-bottom:8px;">Open<span style="color:var(--color-accent);">3</span></span>
+        <span style="display:block; color:var(--color-neutral-800); max-width:32ch;">Netzwerk zur Förderung von OpenSociety, OpenGov und OpenData in Österreich</span>
+      </div>
+      <div>
+        <span style="display:block; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:8px;">Sitemap</span>
+        <div style="display:flex; flex-direction:column; gap:2px;">
+          <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="7">
+            <a href="#" onClick="{{ n.go }}" style="color:inherit; text-decoration:none;">{{ n.label }}</a>
+          </sc-for>
+          <a href="#" style="color:inherit; text-decoration:none;">Newsletter</a>
+        </div>
+      </div>
+      <div>
+        <span style="display:block; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:8px;">Kontakt</span>
+        <div style="display:flex; flex-direction:column; gap:2px;">
+          <a href="#" style="color:inherit; text-decoration:none;">office@open3.at</a>
+          <a href="#" style="color:inherit; text-decoration:none;">Bluesky @seyfro.at</a>
+          <a href="#" style="color:inherit; text-decoration:none;">RSS-Feed</a>
+        </div>
+      </div>
+      <div>
+        <span style="display:block; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:8px;">Lizenz</span>
+        <span style="display:block; color:var(--color-neutral-800);">open3.at-Inhalte stehen, wenn nicht anders angegeben, unter der <a href="#">Creative Commons Namensnennung 3.0 Österreich Lizenz</a>.</span>
+        <div style="display:flex; gap:12px; margin-top:8px;"><a href="#" style="color:inherit;">Impressum</a><a href="#" style="color:inherit;">Datenschutzerklärung</a></div>
+      </div>
+    </footer>
+
+  </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;sidebarPosition&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;rechts&quot;,&quot;links&quot;],&quot;default&quot;:&quot;rechts&quot;,&quot;tsType&quot;:&quot;'rechts' | 'links'&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+class Component extends DCLogic {
+  state = { screen: 'startA', mobile: false, menuOpen: false, exIdx: 4, filter: 'Alle' };
+
+  posts = [
+    { date: '15. Juli 2025', short: '07/25', cat: 'News', author: 'Robert Seyfriedsberger', title: 'Let the Data Union Begin: Our Submission to the European Commission', excerpt: 'At open3, we believe that the future of a democratic, innovative and resilient Europe depends on how we govern and use data today. That’s why we’ve taken part in the European Commission’s public consultation on the upcoming EU Data Union Strategy.' },
+    { date: '24. Juni 2025', short: '06/25', cat: 'News', author: 'Robert Seyfriedsberger', title: 'Ein Register, viele Chancen: Warum Österreich ein zentrales Adressregister mit Open Webservice braucht', excerpt: 'Die unabhängige Initiative mehrGRIPS hat inmitten der Budgetkrise ein bemerkenswert konstruktives Papier vorgelegt: 12 Chancen für Österreich. Einer der Vorschläge: der Aufbau eines zentralen österreichischen Adressregisters samt offenem Webservice.' },
+    { date: '17. Jänner 2025', short: '01/25', cat: 'mehrGRIPS', author: 'Robert Seyfriedsberger', title: 'Veranstaltungstipp zu #mehrGRIPS am 27.1. in der Urania, Wien', excerpt: 'Ist die Politik noch in der Lage, die großen Zukunftsfragen zu lösen? Die Initiative „MEHR GRIPS“ versucht genau das – am 27.1. in der VHS Wiener Urania mit Johannes Kopf, Sabine Herlitschka und Judith Kohlenberger.' },
+    { date: '29. November 2024', short: '11/24', cat: 'mehrGRIPS', author: 'Robert Seyfriedsberger', title: 'Digital Governance in Österreich: braucht es einen Digitalrat?', excerpt: 'Die digitale Transformation stellt Österreich und Europa vor immense Herausforderungen. Eine von A1 in Auftrag gegebene Studie schlägt die Einrichtung eines Digitalrats als zentrale Koordinationsstelle vor.' },
+    { date: '24. September 2024', short: '09/24', cat: 'News', author: 'Robert Seyfriedsberger', title: '„Das Vertrauen zurückgewinnen“ – #mehrGRIPS Gastkommentar im Kurier', excerpt: 'Gastkommentar der Initiative #mehrGRIPS im Kurier.' },
+  ];
+  older = [
+    { short: '04/24', title: 'Parlamentspodcast Offen gesagt: Brauchen wir mehr Transparenz?' },
+    { short: '11/23', title: 'Opendata Buddy: die Magie von KI zum Finden offener Datensätze nutzen' },
+    { short: '10/23', title: 'Wenn KI auf Politik trifft: Ein Streitgespräch zum Informationsfreiheitsgesetz' },
+  ];
+  categories = [
+    { name: 'News', count: 147 }, { name: 'Termine', count: 55 }, { name: 'Studien/Materialien', count: 30 }, { name: 'Medienspiegel', count: 5 }, { name: 'mehrGRIPS', count: 2 },
+  ];
+  projects = [
+    { type: 'Dokumentation', title: 'Barrierefreies und maschinenlesbares Österreichisches Regierungsprogramm 2020-2024', short: 'Regierungsprogramm' },
+    { type: 'Dokumentation', title: 'Übersicht der Grünbuch-Projekte des Bundesrates', short: 'Grünbuch' },
+    { type: 'App', title: 'Opendata Buddy auf Basis von KI & GPTs', short: 'Opendata Buddy' },
+    { type: 'Veranstaltung', title: 'Create Camp gemeinsam mit Wiener Linien mit Schwerpunkt „Verkehr“', short: 'Create Camp' },
+    { type: 'Visualisierung', title: 'Budgetvisualisierung 2011-2014', short: 'Sparpaket 2011–2014' },
+    { type: 'Dokumentation', title: 'Einwände gegen die Veröffentlichung von Open Data und bewährte Antworten darauf', short: 'Einwände' },
+    { type: 'Visualisierung', title: 'Visualisierung der Hypo-Alpe-Adria-Banken-Staatshilfen', short: 'Hypo Alpe Adria' },
+    { type: 'App', title: 'Hochwasserschutz per Open Data in Kremsmünster', short: 'Pegelstand Kremsmünster' },
+    { type: 'Visualisierung', title: 'Wien Budget 2009 Visualisierung', short: 'Wien Budget 2009' },
+    { type: 'Umfrage', title: 'Umfrage zu opendata', short: 'Umfrage Datenarten' },
+    { type: 'Visualisierung', title: 'Wörgl Haushalt 1949-2009 Visualisierung', short: 'Wörgl' },
+    { type: 'Umfrage', title: 'Umfrage „Potentiale von Open Government/Open Data für österreichische NGOs/NPOs/CSOs“', short: 'Umfrage NGOs' },
+    { type: 'App', title: 'ubahnaufzug.at – 24 Stunden Mobilität durch opendata', short: 'ubahnaufzug.at' },
+    { type: 'App', title: 'DataMaps.eu – map your data', short: 'DataMaps.eu' },
+    { type: 'Umfrage', title: 'Umfrage „Potentiale von Open Government für österreichische Nationalratsabgeordnete“', short: 'Umfrage Parlament' },
+    { type: 'App', title: 'Toilet Map Vienna', short: 'Toilet Map Vienna' },
+    { type: 'App', title: 'Glücksspiel-OpenData-Mashup', short: 'Glücksspiel-Karte' },
+    { type: 'App', title: 'ozon-info.at – Ozon-Warnung am Smartphone', short: 'ozon-info.at' },
+    { type: 'Veranstaltung', title: 'Open Government Poetry Contest', short: 'Poetry Contest' },
+    { type: 'App', title: 'Linz Open Data: Apps und Visualisierungen', short: 'WLAN Hotspot Map Linz' },
+    { type: 'Visualisierung', title: 'Kremsmünster Haushalt 2003-2012 Visualisierung', short: 'Kremsmünster Haushalt' },
+    { type: 'Code', title: 'OGD Wien-Adressservice-Unterstützung für geocoder-php Bibliothek', short: 'geocoder-php' },
+  ];
+  basics = ['Einleitung','Open Government einfach erklärt (Video)','openLinks – Linkverzeichnis','Open Government Datenprinzipien','Um welche Daten geht es?','Open Data Loop – Nutzen und Kosten','Open Data Lizenzen','Der Transparenz-Kreislauf','Three Laws of Open Government Data','Stufen der Wiederverwendbarkeit','Neues Zugangsmodell zu Daten','Opendata Wertschöpfungsnetzwerk','Potentiale und Risiken von Open Data','Verzeichnis Applikationswettbewerbe','Datenkatalog-Verzeichnis','Data Quality: What is It?','Leitfaden zum Veröffentlichen von Daten','Potentielle OGD-Formate','Stufenmodell Open Government','Ausgewählte Studien und Artikel','UNECE Aarhus Convention'];
+  services = [
+    { name: 'Grundlagen', desc: 'Grundlageninformationen zu openSociety, openGovernment und openData' },
+    { name: 'openNetwork', desc: 'Netzwerktätigkeit auf der Plattform' },
+    { name: 'openNews', desc: 'Informationstransfer über die Plattform' },
+    { name: 'openLinks', desc: 'Linksammlung' },
+    { name: 'openEvents', desc: 'Veranstaltungsverzeichnis' },
+  ];
+  pastEvents = [
+    { date: '26. Juni 2012', title: 'Open Government Data Konferenz 2012 in Linz', place: 'Linz' },
+    { date: '22. Mai 2012', title: 'Open Week Linz: „Open Source und Recht“ und Apps4Linz Preisverleihung', place: 'Linz' },
+    { date: '29. März 2012', title: '6. OGD Wien-Plattform Treffen', place: 'Wien' },
+    { date: '17. März 2012', title: 'OpenCamp 2012 in Graz', place: 'Graz' },
+    { date: '3. Februar 2012', title: 'Hackathon in Linz', place: 'Linz' },
+    { date: '3. Dezember 2011', title: 'International Open Data Hackathon', place: 'Wien' },
+    { date: '2. Dezember 2011', title: 'Gov2.0Camp Vienna 2011', place: 'Wien' },
+    { date: '28. November 2011', title: 'Open(Geo)GovernmentData', place: 'Wien' },
+    { date: '16. Juni 2011', title: 'OGD 2011: Open Government Data Conference 2011', place: 'Wien' },
+    { date: '3. Dezember 2010', title: 'Gov2.0Camp 2010: Wiener Planungswerkstatt', place: 'Wien' },
+  ];
+  submissionAreas = [
+    { title: 'Legal Clarity and Simplification', text: 'Harmonise data terminology across EU laws, codify open-by-default, and simplify the regulatory landscape.' },
+    { title: 'Governance and Coordination', text: 'Appoint national data coordinators, mandate metadata standards, and support coherent public-sector governance.' },
+    { title: 'Institutions and Infrastructure', text: 'Fund data portals, support Data Labs and helpdesks, and embed data reuse in public services.' },
+    { title: 'High-Quality and Linked Data', text: 'Incentivise 5-star Linked Open Data, ensure AI-ready datasets, and link EU funding to metadata quality.' },
+    { title: 'Trusted Data Flows and Resilience', text: 'Establish certification schemes for secure cross-border data sharing and make sovereignty a design principle.' },
+    { title: 'Smart Investment in Data Spaces', text: 'Focus on real use cases and business value, with modular governance and priority sectors like health and mobility.' },
+    { title: 'Cultural Change and International Learning', text: 'Support storytelling and transparency benchmarking, and learn from global leaders like Korea and Singapore.' },
+    { title: 'Reducing Bureaucracy in EU Funding', text: 'Advocate for simpler, fairer access to EU funding—especially for smaller public actors and civil society.' },
+  ];
+  projectFacts = [
+    { k: 'Jahr', v: '2010–2011' }, { k: 'Datenquelle', v: 'Bundesministerium für Finanzen, Bundesfinanzrahmen 2011–2014' }, { k: 'Technik', v: 'JavaScript InfoVis Toolkit (Treemap)' }, { k: 'Lizenz', v: 'CC BY 3.0 AT' }, { k: 'Kontakt', v: 'office@open3.at' },
+  ];
+  screenDefs = [
+    ['startA','Start A'],['startB','Start B'],['post','Beitrag'],['projects','Projekte'],['project','Projekt-Detail'],['basics','Grundlagen'],['about','Über open3'],['events','openEvents'],
+  ];
+  navDefs = [['startA','Blog'],['projects','Projekte'],['basics','Grundlagen'],['events','openEvents'],['network','openNetwork'],['press','Medienspiegel'],['about','Über open3']];
+
+  go = (id) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ screen: id, menuOpen: false }); };
+
+  renderVals() {
+    const { screen, mobile, menuOpen, exIdx, filter } = this.state;
+    const sidebarLeft = (this.props.sidebarPosition ?? 'rechts') === 'links';
+    const btn = (on) => `font:inherit; font-size:12px; padding:5px 10px; border:1px solid ${on ? '#ec3013' : 'rgba(243,242,242,0.3)'}; background:${on ? '#ec3013' : 'transparent'}; color:#f3f2f2; cursor:pointer;`;
+    const screens = this.screenDefs.map(([id, label]) => ({ id, label, go: this.go(id), style: btn(screen === id) }));
+    const navItems = this.navDefs.map(([id, label]) => {
+      const active = screen === id || (id === 'startA' && (screen === 'startB' || screen === 'post')) || (id === 'projects' && screen === 'project');
+      return { id, label, go: this.go(id), style: `font-size:14px; text-decoration:none; color:${active ? 'var(--color-accent)' : 'inherit'}; border-bottom:2px solid ${active ? 'var(--color-accent)' : 'transparent'}; padding:4px 0;`, mobileStyle: `padding:14px 16px; border-bottom:1px solid var(--color-divider); text-decoration:none; font-size:16px; color:${active ? 'var(--color-accent)' : 'inherit'};` };
+    });
+    const types = ['Alle', 'Visualisierung', 'App', 'Umfrage', 'Dokumentation', 'Veranstaltung'];
+    const projectFilters = types.map(t => ({ label: t, go: () => this.setState({ filter: t }), cls: 'tag ' + (filter === t ? 'tag-accent' : 'tag-neutral') }));
+    const withIds = this.projects.map((p, i) => ({ ...p, slotId: 'proj-' + i }));
+    const visibleProjects = filter === 'Alle' ? withIds : withIds.filter(p => p.type === filter);
+    const explorer = withIds[exIdx];
+    const posts = this.posts.map((p, i) => ({ ...p, rowStyle: `padding:28px 0; border-bottom:${i === this.posts.length - 1 ? '0' : '2px solid var(--color-divider)'};` }));
+    const recent = [...this.posts.map(p => ({ short: p.short, title: p.title })), ...this.older];
+    const label = (this.screenDefs.find(s => s[0] === screen) || [,'Seite'])[1];
+    return {
+      screens, navItems, projectFilters, visibleProjects, explorer, explorerSlotId: 'explorer-' + exIdx, posts, recent,
+      lead: posts[0], restPosts: posts.slice(1),
+      categories: this.categories,
+      basics: this.basics.map((t, i) => ({ num: String(i + 1).padStart(2, '0'), title: t })),
+      services: this.services, pastEvents: this.pastEvents, projectFacts: this.projectFacts,
+      submissionAreas: this.submissionAreas.map((a, i) => ({ ...a, num: String(i + 1).padStart(2, '0') })),
+      relatedProjects: [withIds[8], withIds[10], withIds[20]],
+      screenLabel: label,
+      isStartA: screen === 'startA', isStartB: screen === 'startB', isPost: screen === 'post', isProjects: screen === 'projects', isProject: screen === 'project', isBasics: screen === 'basics', isAbout: screen === 'about', isEvents: screen === 'events' || screen === 'network' || screen === 'press',
+      desktop: !mobile, mobile, menuOpen: mobile && menuOpen, menuLabel: menuOpen ? 'Schließen' : 'Menü',
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      setDesktop: () => this.setState({ mobile: false, menuOpen: false }),
+      setMobile: () => this.setState({ mobile: true }),
+      desktopBtnStyle: btn(!mobile), mobileBtnStyle: btn(mobile),
+      frameStyle: mobile ? 'width:390px; max-width:100%; background:var(--color-bg); min-height:100vh; box-shadow:var(--shadow-lg); margin:24px 0;' : 'width:100%; max-width:1280px; background:var(--color-bg); min-height:100vh;',
+      mainStyle: `flex:1 1 560px; min-width:0; order:${sidebarLeft ? 2 : 1}; ${mobile ? '' : (sidebarLeft ? 'padding-left:40px;' : 'padding-right:40px;')}`,
+      asideStyle: `flex:1 1 260px; max-width:${mobile ? '100%' : '340px'}; min-width:0; display:flex; flex-direction:column; gap:24px; order:${sidebarLeft ? 1 : 2}; ${mobile ? 'border-top:2px solid var(--color-divider); padding-top:8px;' : (sidebarLeft ? 'border-right:2px solid var(--color-divider); padding-right:40px;' : 'border-left:2px solid var(--color-divider); padding-left:40px;')}`,
+      goHome: this.go('startA'), goPost: this.go('post'), goProjects: this.go('projects'), goProject: this.go('project'),
+      nextExplorer: () => this.setState(s => ({ exIdx: (s.exIdx + 1) % this.projects.length })),
+    };
+  }
+}
+</script>
+</body>
+</html>

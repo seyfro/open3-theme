@@ -1,0 +1,19 @@
+/*
+Theme Name: open3
+Theme URI: https://github.com/seyfro/open3-theme
+Author: open3 – Netzwerk für Open Society, Open Government und Open Data
+Author URI: https://www.open3.at/
+Description: Klassisches WordPress-Theme für open3.at nach dem Design-Handoff 2026: Start A mit Beitragsliste und Seitenleiste (Suche, Projekt-Explorer, Neu im Blog, Kategorien, Newsletter), Custom Post Type „Projekt“ mit Projekttypen, selbst gehostete Archivo-Schrift, theme.json-Palette und barrierefreie Navigation. Text-Domain open3, deutsche Quellstrings.
+Version: 2.0.0
+Requires at least: 6.4
+Tested up to: 6.8
+Requires PHP: 8.1
+License: GPL-2.0-or-later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: open3
+Domain Path: /languages
+Tags: blog, two-columns, right-sidebar, custom-menu, featured-images, translation-ready
+*/
+
+/* Dieses Stylesheet enthält nur den Theme-Header. Die Styles liegen in
+   assets/css/design-system.css und assets/css/theme.css (siehe inc/enqueue.php). */

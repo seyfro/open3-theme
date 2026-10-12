@@ -1,0 +1,22 @@
+# Zeilenenden
+* text=auto eol=lf
+*.ps1 text eol=crlf
+
+# Binärdateien
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff2 binary
+*.mo binary
+
+# Nicht im Dist-Paket (git archive). In .gitattributes wirken Verzeichnismuster
+# nicht rekursiv, daher „/**“.
+design_handoff_open3_startseite/** export-ignore
+dev/** export-ignore
+docs/** export-ignore
+open3/dev/** export-ignore
+old_theme/** export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+.distignore export-ignore
+README.md export-ignore

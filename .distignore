@@ -1,0 +1,15 @@
+design_handoff_open3_startseite
+dev
+docs
+old_theme
+open3/dev
+.git
+.github
+.gitattributes
+.gitignore
+.distignore
+node_modules
+dist
+*.zip
+*.log
+README.md

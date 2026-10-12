@@ -1,0 +1,53 @@
+/*
+ * open3 – JIT treemap pages (single-projekt-sparpaket.php, single-projekt-wien-budget-2009-visualisierung.php).
+ * Port of legacy style.css:1418-1593 made fluid: the canvas fills .o3-treemap (max 950px) and keeps
+ * the legacy 600px height; JIT reads the container size at init. IE shims, #left/#right-container and
+ * the .button/.white gradient buttons are dropped (controls use .btn from the design system).
+ */
+
+/* Block chrome (theme.css owns the .o3-project chrome; these are the treemap-only additions) */
+.o3-treemap-block { margin: 8px 0 44px; }
+.o3-treemap-block__title { font-size: 22px; line-height: 1.15; letter-spacing: -.01em; margin: 0 0 8px; scroll-margin-top: 16px; }
+.o3-treemap-block__subtitle { font-size: 18px; line-height: 1.2; margin: 32px 0 8px; }
+.o3-treemap-block__hint { font-size: 15px; line-height: 26px; margin: 0 0 16px; max-width: 70ch; color: var(--color-neutral-800); }
+.o3-treemap-block__hint a { color: var(--color-accent-700); }
+.o3-treemap-block + .o3-project__body { margin-top: 44px; padding-top: 36px; border-top: var(--o3-rule); }
+
+/* Controls (#id-list / #id-list2) */
+.o3-treemap__controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 24px; margin: 0 0 12px; }
+.o3-treemap__layouts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin: 0; padding: 0; border: 0; min-width: 0; }
+.o3-treemap__layouts legend { padding: 0; margin: 0 0 6px; float: left; width: 100%; }
+.o3-treemap__radio { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; line-height: 1.3; cursor: pointer; }
+.o3-treemap__radio input { margin: 0; accent-color: var(--color-accent); }
+.o3-treemap__back { text-decoration: none; margin-left: auto; }
+
+/* Canvas container (legacy #container / #center-container / #infovis) */
+.o3-treemap { position: relative; width: 100%; max-width: 950px; margin: 0 auto; background: #1a1a1a; color: #ccc; text-align: center; }
+#infovis, #infovis2 { position: relative; width: 100%; height: 600px; margin: auto; overflow: hidden; }
+#infovis canvas, #infovis2 canvas { display: block; }
+.o3-treemap__still { display: block; width: 100%; max-width: 885px; height: auto; margin: 0 auto; border: var(--o3-rule); }
+
+/* Log line (legacy #log) */
+#log, #log2 { position: absolute; top: 10px; left: 10px; font-size: 1em; font-weight: bold; color: #23a4ff; pointer-events: none; }
+
+/* Nodes (legacy .node) */
+.node { color: #fff; font-size: 9px; overflow: hidden; cursor: pointer; padding: 0; }
+
+/* Tooltips (legacy .tip, the second, dark definition wins) */
+.tip { color: #fff; text-align: center; width: 200px; background-color: #000; opacity: .9; font-size: 10px; line-height: 1.4; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; padding: 7px; z-index: 20; }
+.tip .thumbnail { width: 100px; margin: 3px; }
+.thumbnail { width: 100px; margin: 3px; }
+
+/* Links under a treemap (legacy #container-bottom) */
+.o3-treemap__links { font-size: 14px; line-height: 24px; margin: 12px auto 0; max-width: 950px; text-align: center; color: var(--color-neutral-800); }
+.o3-treemap__links a { color: var(--color-accent-700); }
+
+/* Narrow screens: the fixed 600px canvas is tall; keep it usable */
+@media (max-width: 599px) {
+  #infovis, #infovis2 { height: 480px; }
+  .o3-treemap__back { margin-left: 0; }
+}
+
+@media print {
+  .o3-treemap__controls { display: none; }
+}

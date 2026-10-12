@@ -1,0 +1,22 @@
+# Abhängigkeiten / Werkzeuge
+node_modules/
+.wordpress-playground/
+.playground/
+
+# Build-Artefakte
+dist/
+*.zip
+
+# Dev-Ausgaben
+dev/shots/
+docs/legacy-export/
+*.log
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Kompilierte Übersetzungen
+open3/languages/*.mo
